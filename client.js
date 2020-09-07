@@ -1,7 +1,7 @@
 const protobuf = require('protocol-buffers');
 const fs = require('fs');
 const EasySock = require('easy_sock');
-const schemas = protobuf(fs.readFileSync(`${__dirname}/detail-service/proto/detail.proto`));
+const schemas = protobuf(fs.readFileSync(`${__dirname}/detail.proto`));
 
 const easySock = new EasySock({
   ip: '127.0.0.1',
@@ -35,7 +35,7 @@ easySock.isReceiveComplete = function(buffer) {
     return 0;
   }
   const bodyLength = buffer.readInt32BE(4);
-  if (bodyLength >= bodyLength + 8) {
+  if (buffer.length >= bodyLength + 8) {
     return bodyLength + 8
   } else {
     return 0;
