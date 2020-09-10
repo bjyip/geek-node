@@ -1,3 +1,4 @@
+const fs = require('fs');
 const koa = require('koa');
 const mount = require('koa-mount');
 const static = require('koa-static');
@@ -30,6 +31,19 @@ app.use(
     ctx.status = 200;
     ctx.body = detailTemplate(result);
   })
+)
+
+// 播放页
+app.use(
+  mount('/play', async ctx => {
+    ctx.status = 200;
+    ctx.body = fs.readFileSync(`${__dirname}/source/index.htm`, 'utf-8');
+  })
+)
+app.use(
+  mount('/api', graphqlHTTP({
+    schema: require('./schema.js')
+  }))
 )
 
 // koa-graphql例子
