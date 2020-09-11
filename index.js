@@ -51,6 +51,20 @@ app.use(mount('/graphql', graphqlHTTP({
   schema: require('./schema.js')
 })));
 
+// 服务端渲染例子
+require('@babel/register')({
+  presets: ['@babel/preset-react']
+})
+const ReactDOMServer = require('react-dom/server')
+app.use(
+  mount('/render', async ctx => {
+    ctx.status = 200;
+    ctx.body = ReactDOMServer.renderToString(
+      require('./index.jsx')
+    )
+  })
+)
+
 app.listen(3000, () => {
   console.log('server listened: http://localhost:3000');
 });
